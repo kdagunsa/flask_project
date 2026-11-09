@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Item List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>My Item List</h1>
+
+        <!-- Form to Add Items -->
+        <form action="/add" method="POST">
+            <input type="text" name="name" placeholder="Enter item name..." required>
+            <button type="submit">Add Item</button>
+        </form>
+
+        <hr>
+
+        <!-- Display Items with Delete Option -->
+        <ul>
+            {% for item in items %}
+                <li>
+                    <span>{{ item.name }}</span>
+                    <a href="/delete/{{ item.id }}" onclick="return confirm('Delete this item?')">Delete</a>
+                </li>
+            {% else %}
+                <li>No items added yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
