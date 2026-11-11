@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
+# Set database path
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'items.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -23,16 +24,15 @@ def index():
     return render_template('index.html', items=items)
 
 @app.route('/add', methods=['POST'])
-def add_item():
+def add():
     item_name = request.form.get('name')
     if item_name:
-        new_item = Item(name=item_name)
-        db.session.add(new_item)
+        db.session.add(Item(name=item_name))
         db.session.commit()
     return redirect(url_for('index'))
 
 @app.route('/delete/<int:id>')
-def delete_item(id):
+def delete(id):
     item = Item.query.get_or_404(id)
     db.session.delete(item)
     db.session.commit()
